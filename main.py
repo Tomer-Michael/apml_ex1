@@ -16,7 +16,7 @@ def train(name,
           dataset_name, should_log_metadata,
           batch_size, should_shuffle, num_workers,
           criterion_name,
-          learning_rate, weight_decay, momentum, optimizer_name,
+          optimizer_name, learning_rate, weight_decay, momentum,
           num_epochs, print_every):
 
     print('Training ' + str(name))
@@ -27,7 +27,7 @@ def train(name,
 
     criterion = create_criterion(criterion_name)
 
-    optimizer = create_optimizer(model, learning_rate, weight_decay, momentum, optimizer_name)
+    optimizer = create_optimizer(model, optimizer_name, weight_decay, momentum, learning_rate)
 
     _train_internal(model, data_loader, criterion, optimizer, num_epochs, print_every, name)
 
@@ -64,11 +64,11 @@ def create_criterion(criterion_name):
         raise Exception('Error: unsupported criterion_name:', criterion_name)
 
 
-def create_optimizer(model, learning_rate, weight_decay, momentum, optimizer_name):
+def create_optimizer(model, optimizer_name, weight_decay, momentum, learning_rate):
     if optimizer_name == 'Adam':
         return optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
     elif optimizer_name == 'SGD':
-        return optim.SGD(model.parameters(), lr=learning_rate, momentum=momentum, weight_decay=weight_decay)
+        return optim.SGD(model.parameters(), lr=learning_rate, weight_decay=weight_decay, momentum=momentum)
     else:
         raise Exception('Error: unsupported optimizer_name:', optimizer_name)
 
@@ -170,7 +170,7 @@ def main():
               dataset_name='organized_data/', should_log_metadata=True,
               batch_size=25, should_shuffle=True, num_workers=2,
               criterion_name='cross_entropy_loss',
-              learning_rate=0.0009, weight_decay=0.1, momentum=0.85, optimizer_name='Adam',
+              optimizer_name='Adam', learning_rate=0.0009, weight_decay=0.1, momentum=0.85,
               num_epochs=10, print_every=50)
     elif '-validate' in sys.argv:
         validate()
