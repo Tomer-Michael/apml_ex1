@@ -34,7 +34,7 @@ def train(name,
                                optimizer_name, learning_rate, weight_decay, momentum,
                                num_epochs)
 
-    train_internal(model, data_loader, criterion, optimizer, num_epochs, print_every, name)
+    _train_internal(model, data_loader, criterion, optimizer, num_epochs, print_every, name)
 
 
 def create_data_loader(dataset_name, should_log_metadata, batch_size, should_shuffle, num_workers):
@@ -78,7 +78,7 @@ def create_optimizer(model, learning_rate, weight_decay, momentum, optimizer_nam
         raise Exception('Error: unsupported optimizer_name:', optimizer_name)
 
 
-def train_internal(model, data_loader, criterion, optimizer, num_epochs, print_every, name, should_plot=True):
+def _train_internal(model, data_loader, criterion, optimizer, num_epochs, print_every, name, should_plot=True):
     print('Training is starting now.')
 
     total_losses = list()
@@ -129,28 +129,28 @@ def train_internal(model, data_loader, criterion, optimizer, num_epochs, print_e
 def validate():
     print('Validating.')
 
-    test_internal('current_weights', 'dev.pickle')
+    _test_internal('current_weights', 'dev.pickle')
 
 
 def test():
     print('Testing.')
 
-    test_internal('current_weights', 'organized_data/')
+    _test_internal('current_weights', 'organized_data/')
 
 
 def validate_pre_trained():
     print('Validating pre-trained model.')
 
-    test_internal('pre_trained', 'dev.pickle')
+    _test_internal('pre_trained', 'dev.pickle')
 
 
 def test_pre_trained():
     print('Testing pre-trained model.')
 
-    test_internal('pre_trained', 'organized_data/')
+    _test_internal('pre_trained', 'organized_data/')
 
 
-def test_internal(checkpoint_name, path_to_dataset):
+def _test_internal(checkpoint_name, path_to_dataset):
     model = create_model(checkpoint_name=checkpoint_name, is_in_eval_mode=True)
 
     data_loader = create_data_loader(path_to_dataset, True, 4, False, 2)
