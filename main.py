@@ -29,17 +29,12 @@ def train(name,
 
     optimizer = create_optimizer(model, learning_rate, weight_decay, momentum, optimizer_name)
 
-    NAME_FORMAT = 'criterion_name_{}__optimizer_name_{}_lr{}_wd{}_mom{}__epochs{}'
-    name2 = NAME_FORMAT.format(criterion_name,
-                               optimizer_name, learning_rate, weight_decay, momentum,
-                               num_epochs)
-
     _train_internal(model, data_loader, criterion, optimizer, num_epochs, print_every, name)
 
 
 def create_data_loader(dataset_name, should_log_metadata, batch_size, should_shuffle, num_workers):
     if dataset_name in ('train.pickle', 'dev.pickle'):
-        dataset = load_dataset(dataset_name=dataset_name, should_log_metadata=should_log_metadata)
+        dataset = load_pickle_dataset(dataset_name=dataset_name, should_log_metadata=should_log_metadata)
     else:
         transform = transforms.Compose([
             transforms.ToTensor(),

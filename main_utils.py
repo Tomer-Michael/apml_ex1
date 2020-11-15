@@ -20,7 +20,7 @@ def get_path_to_image_folder_root(root_name):
     return 'res/data/' + root_name
 
 
-def load_dataset(dataset_name, should_log_metadata=False):
+def load_pickle_dataset(dataset_name, should_log_metadata=False):
     relative_path_to_dataset = 'res/data/' + dataset_name
     path = relative_path_to_absolute_path(relative_path_to_dataset)
     print('Path is: ', path)
