@@ -166,7 +166,7 @@ def _test_internal(checkpoint_name, path_to_dataset):
 
 def main():
     if '-train' in sys.argv:
-        train(name='37',
+        train(name='37',  # todo tomer make auto increasing!!!
               dataset_name='organized_data/', should_log_metadata=True,
               batch_size=25, should_shuffle=True, num_workers=2,
               criterion_name='cross_entropy_loss',
