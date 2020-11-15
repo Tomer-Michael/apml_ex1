@@ -19,7 +19,7 @@ def train(name,
           learning_rate, weight_decay, momentum, optimizer_name,
           num_epochs, print_every):
 
-    print('Training.')
+    print('Training ' + str(name))
 
     model = create_model()
 
