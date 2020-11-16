@@ -119,7 +119,7 @@ def _train_internal(model, data_loader, criterion, optimizer, num_epochs, print_
         plt.show()
 
     validate()
-    test()
+    test_on_training_dataset()
 
 
 def validate():
@@ -128,7 +128,7 @@ def validate():
     _test_internal('current_weights', 'dev.pickle')
 
 
-def test():
+def test_on_training_dataset():
     print('Testing.')
 
     _test_internal('current_weights', 'organized_data/')
@@ -140,10 +140,16 @@ def validate_pre_trained():
     _test_internal('pre_trained', 'dev.pickle')
 
 
-def test_pre_trained():
-    print('Testing pre-trained model.')
+def test_pre_trained_on_updated_training_dataset():
+    print('Testing pre-trained model on new dataset.')
 
     _test_internal('pre_trained', 'organized_data/')
+
+
+def test_pre_trained_on_old_training_dataset():
+    print('Testing pre-trained model on old dataset.')
+
+    _test_internal('pre_trained', 'train.pickle')
 
 
 def _test_internal(checkpoint_name, path_to_dataset):
@@ -303,11 +309,11 @@ def main():
     elif '-validate' in sys.argv:
         validate()
     elif '-test' in sys.argv:
-        test()
+        test_on_training_dataset()
     elif '-validate_pre_trained' in sys.argv:
         validate_pre_trained()
     elif '-test_pre_trained' in sys.argv:
-        test_pre_trained()
+        test_pre_trained_on_updated_training_dataset()
     elif '-adversarial_example' in sys.argv:
         findAdversarialExample()
     else:
