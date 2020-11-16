@@ -164,7 +164,22 @@ def _test_internal(checkpoint_name, path_to_dataset):
     print('Accuracy of the network on the ' + str(len(data_loader)) + ' test images: %d %%' % (100 * correct / total))
 
 
-def adversarialExample():
+def findAdversarialExample(algorithm_name='FGSM',
+                           checkpoint_name='pre_trained', path_to_dataset='dev.pickle', epsilons=None):
+    if epsilons is None:
+        epsilons = [0, .05, .1, .15, .2, .25, .3]
+
+    model = create_model(checkpoint_name=checkpoint_name, is_in_eval_mode=True)
+
+    data_loader = create_data_loader(path_to_dataset, False, 1, True, 2)
+
+    if algorithm_name == 'FGSM':
+        fgsmAdversarialExample(model, data_loader, checkpoint_name, path_to_dataset, epsilons)
+    else:
+        raise Exception('Error: unsupported algorithm_name:', algorithm_name)
+
+
+def fgsmAdversarialExample(model, data_loader, checkpoint_name, path_to_dataset, epsilons):
     pass
 
 
@@ -185,7 +200,7 @@ def main():
     elif '-test_pre_trained' in sys.argv:
         test_pre_trained()
     elif '-adversarial_example' in sys.argv:
-        adversarialExample()
+        findAdversarialExample()
     else:
         raise Exception('Error: unsupported sys arguments:', sys.argv)
 
