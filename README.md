@@ -2,6 +2,16 @@
 
 Link to data sheets: https://docs.google.com/spreadsheets/d/1_04Bag4r5kpfOpma2Mi7TeXJrahfNGbUj6TKe7vBAGM/edit?usp=sharing
 
+Testing the model
+
+To test the model, simply call _test_internal with the name of the checkpoint to be
+tested as the first argument, and the name of the dataset as the second argument.
+To help you, some convenience-functions as been added -
+validate - To test the latest checkpoint on 'dev.pickle'. 
+test_on_training_dataset - To test the latest checkpoint on the organized dataset.
+validate_pre_trained - To test the pre-trained checkpoint on 'dev.pickle'.
+test_pre_trained_on_updated_training_dataset - To test the pre-trained checkpoint on the organized dataset
+test_pre_trained_on_old_training_dataset - To test the pre-trained checkpoint on 'train.pickle'.
 
 
 Adversarial Examples
