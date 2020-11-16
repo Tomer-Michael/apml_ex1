@@ -1,4 +1,4 @@
-# apml_ex1
+# APML - Assignment 1
 
 Link to data sheets: 
 
