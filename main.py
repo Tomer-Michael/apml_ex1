@@ -166,7 +166,8 @@ def _test_internal(checkpoint_name, path_to_dataset):
 
 
 def findAdversarialExample(attacker_name='FGSM',
-                           use_cuda=False, checkpoint_name='pre_trained', path_to_dataset='dev.pickle', epsilons=None):
+                           use_cuda=False, checkpoint_name='current_weights', path_to_dataset='dev.pickle', epsilons=None):
+    print('Finding an adversarial example.')
     if epsilons is None:
         epsilons = [0, .05, .1, .15, .2, .25, .3]
 
@@ -182,14 +183,8 @@ def findAdversarialExample(attacker_name='FGSM',
         accuracies.append(acc)
         examples.append(ex)
 
-    plt.figure(figsize=(5, 5))
-    plt.plot(epsilons, accuracies, "*-")
-    plt.yticks(np.arange(0, 1.1, step=0.1))
-    plt.xticks(np.arange(0, max(epsilons) + 0.05, step=0.05))
-    plt.title("Accuracy vs Epsilon")
-    plt.xlabel("Epsilon")
-    plt.ylabel("Accuracy")
-    plt.show()
+    plot_accuracy_vs_epsilon(accuracies, epsilons)
+    plot_adversarial_examples(epsilons, examples)
 
 
 def create_attacker(attacker_name):
@@ -203,7 +198,7 @@ def fgsm_attack(image, epsilon, data_grad):
     # Collect the element-wise sign of the data gradient
     sign_data_grad = data_grad.sign()
     # Create the perturbed image by adjusting each pixel of the input image
-    perturbed_image = image + epsilon*sign_data_grad
+    perturbed_image = image + epsilon * sign_data_grad
     # Adding clipping to maintain [0,1] range
     perturbed_image = torch.clamp(perturbed_image, 0, 1)
     # Return the perturbed image
@@ -262,6 +257,36 @@ def _findAdversarialExampleInternal(model, data_loader, device, attacker, epsilo
 
     # Return the accuracy and an adversarial example
     return final_acc, adv_examples
+
+
+def plot_accuracy_vs_epsilon(accuracies, epsilons):
+    plt.figure(figsize=(5, 5))
+    plt.plot(epsilons, accuracies, "*-")
+    plt.yticks(np.arange(0, 1.1, step=0.1))
+    plt.xticks(np.arange(0, max(epsilons) + 0.05, step=0.05))
+    plt.title("Accuracy vs Epsilon")
+    plt.xlabel("Epsilon")
+    plt.ylabel("Accuracy")
+    plt.show()
+
+
+def plot_adversarial_examples(epsilons, examples):
+    # Plot several examples of adversarial samples at each epsilon
+    cnt = 0
+    plt.figure(figsize=(8, 10))
+    for i in range(len(epsilons)):
+        for j in range(len(examples[i])):
+            cnt += 1
+            plt.subplot(len(epsilons), len(examples[0]), cnt)
+            plt.xticks([], [])
+            plt.yticks([], [])
+            if j == 0:
+                plt.ylabel("Eps: {}".format(epsilons[i]), fontsize=14)
+            orig, adv, ex = examples[i][j]
+            plt.title("{} -> {}".format(orig, adv))
+            plt.imshow(ex)
+    plt.tight_layout()
+    plt.show()
 
 
 def main():
