@@ -284,7 +284,10 @@ def plot_adversarial_examples(epsilons, examples):
                 plt.ylabel("Eps: {}".format(epsilons[i]), fontsize=14)
             orig, adv, ex = examples[i][j]
             plt.title("{} -> {}".format(orig, adv))
-            plt.imshow(ex)
+
+            image = img = np.transpose(ex, (1, 2, 0))
+            plt.imshow(image)
+
     plt.tight_layout()
     plt.show()
 
