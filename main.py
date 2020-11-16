@@ -164,6 +164,10 @@ def _test_internal(checkpoint_name, path_to_dataset):
     print('Accuracy of the network on the ' + str(len(data_loader)) + ' test images: %d %%' % (100 * correct / total))
 
 
+def adversarialExample():
+    pass
+
+
 def main():
     if '-train' in sys.argv:
         train(name='37',  # todo make auto increasing!!!
@@ -180,6 +184,8 @@ def main():
         validate_pre_trained()
     elif '-test_pre_trained' in sys.argv:
         test_pre_trained()
+    elif '-adversarial_example' in sys.argv:
+        adversarialExample()
     else:
         raise Exception('Error: unsupported sys arguments:', sys.argv)
 
